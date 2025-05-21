@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>One Click Closer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: #0f0f0f;
+      color: #fff;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .container {
+      background: rgba(255, 255, 255, 0.06);
+      padding: 40px 30px;
+      border-radius: 16px;
+      width: 90%;
+      max-width: 720px;
+      text-align: center;
+      max-height: 95vh;
+      overflow-y: auto;
+    }
+    h1, h2 {
+      font-size: 24px;
+      line-height: 1.6;
+      margin-bottom: 30px;
+    }
+    button {
+      padding: 12px 24px;
+      background: #fff;
+      color: #000;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+      margin-top: 20px;
+    }
+    button:hover {
+      background: #e0e0e0;
+    }
+    .hidden { display: none; }
+    #emojiDisplay {
+      font-size: 36px;
+      margin-bottom: 10px;
+    }
+    #slider { width: 100%; }
+    img {
+      max-width: 100%;
+      border-radius: 12px;
+    }
+    .timeline-block {
+      margin-bottom: 40px;
+    }
+    .timeline-images {
+      display: flex;
+      overflow-x: auto;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .timeline-images div {
+      min-width: 150px;
+      height: 150px;
+      background: #444;
+      border-radius: 10px;
+      color: #aaa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #lotteryGrid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .box {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      background: #333;
+      color: #ccc;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      transition: 0.2s;
+    }
+    .highlight { background: #ffeb3b; color: #000; }
+    .hearts {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .heart {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: red;
+      transform: rotate(45deg);
+      animation: floatUp 6s infinite ease-in;
+    }
+    .heart::before, .heart::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: red;
+      border-radius: 50%;
+    }
+    .heart::before { top: -10px; left: 0; }
+    .heart::after { left: -10px; top: 0; }
+    @keyframes floatUp {
+      0% { transform: translateY(100vh) rotate(45deg); opacity: 1; }
+      100% { transform: translateY(-10vh) rotate(45deg); opacity: 0; }
+    }
+    @media (max-width: 600px) {
+      h1, h2 { font-size: 18px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="mainContainer">
+    <h1 id="message"></h1>
+
+    <!-- Slider -->
+    <div id="sliderContainer" class="hidden">
+      <div id="emojiDisplay">🙂</div>
+      <input type="range" min="1" max="10" value="5" id="slider" />
+    </div>
+
+    <!-- Punch Image -->
+    <img id="punchImage" class="hidden" src="" alt="Punch Hrishi" />
+
+    <!-- Minute Counter Page -->
+    <div id="minutesCounter" class="hidden" style="margin-top: 20px; font-size: 18px;"></div>
+
+    <!-- Timeline Section -->
+    <div id="timelineSection" class="hidden">
+      <h2>Our Journey, One Memory at a Time…</h2>
+      <div class="timeline-block">
+        <h3>It all started with a Dare & Dare game…</h3>
+        <p>A silly challenge turned into something unforgettable. Who knew?</p>
+        <div class="timeline-images"><div>[Image Placeholder]</div></div>
+      </div>
+      <div class="timeline-block">
+        <h3>Us — Raw, Real & Intense</h3>
+        <p>Spent moments, nights with you… broke your heart, made your head bleed, cried, laughed, cooked, kissed, loved, cuddled, hugged… had the best sex of my life hundreds of times. Still, I want more of you — more of your smile, your tempting eyes, your presence.</p>
+        <div class="timeline-images"><div>[1]</div><div>[2]</div><div>[3]</div></div>
+      </div>
+      <div class="timeline-block">
+        <h3>Then came Billu…</h3>
+        <p>It felt like we had our own child to care for. We fed, loved, cleaned, protected… just like a little family.</p>
+        <div class="timeline-images"><div>[Billu 1]</div><div>[Billu 2]</div></div>
+      </div>
+      <div class="timeline-block">
+        <h2 style="color: #ff9999;">Why am I so obsessed with you?</h2>
+        <p>Because I still look at you the same way I did that first night.</p>
+      </div>
+    </div>
+
+    <!-- Lottery Section -->
+    <div id="lotterySection" class="hidden">
+      <h2>Your Luck Decides Your Surprise</h2>
+      <div id="lotteryGrid">
+        <div class="box" id="b0">[1]</div>
+        <div class="box" id="b1">[2]</div>
+        <div class="box" id="b2">[3]</div>
+        <div class="box" id="b3">[4]</div>
+        <div class="box" id="b4">[5]</div>
+        <div class="box" id="b5">[6]</div>
+      </div>
+      <button onclick="startLottery()">Click to Play</button>
+    </div>
+
+    <!-- Shoe Image Confirmation -->
+    <div id="shoeImageSection" class="hidden">
+      <h2>You will receive your Onitsuka Tiger Mexican on 24th May 2025.</h2>
+      <img src="YOUR_ONITSUKA_TIGER_IMAGE_LINK_HERE" alt="Surprise Shoe" />
+    </div>
+
+    <!-- Final Buttons -->
+    <div id="finalButtons" class="hidden">
+      <h2>So... what now, Sam?</h2>
+      <button onclick="location.href='tel:+91XXXXXXXXXX'">Call Hrishi</button>
+      <button onclick="location.href='https://wa.me/91XXXXXXXXXX'">Let’s Talk</button>
+      <button onclick="alert('Yay! This means the world.')">You’re Forgiven. Maybe.</button>
+    </div>
+
+    <button id="nextBtn" onclick="nextMessage()">Click to Continue</button>
+    <div class="hearts" id="heartEffect"></div>
+  <script>
+        const messages = [
+          "Sam, sometimes words get lost in anger. But maybe… every click today can bring us a little closer.",
+          "On a scale of 1 to 10, how angry are you at Hrishi right now?",
+          "Fair. I deserve it. Now go ahead, Sam. Tap 3 times to punch Hrishi’s dumb face.",
+          "Felt better? I love you. There’s something waiting ahead.",
+          "minutes",  // Page 4
+          "timeline", // Page 5
+          "I’m sorry, Sam. For the words I said, the way I said them, and the way I made you feel. You deserve kindness, not conflict. Love, not ego. But Hrishi is learning. He wants to be better. For you.",
+          "I didn’t make this to impress you, Sam. I made this to show you're worth effort, creativity, and every single click.",
+          "lottery",  // Page 8
+          "shoeConfirm", // Page 9
+          "So... what now, Sam?",
+          "finalButtons" // Page 11
+        ];
+    
+        const punchImages = ["IMAGE_1_LINK_HERE", "IMAGE_2_LINK_HERE", "IMAGE_3_LINK_HERE"];
+        const emojis = ["😐","🙂","😕","😠","😡","🔥","😤","💢","🤯","😭"];
+    
+        let index = -1, punchStep = 0, typingTimeout;
+        const msg = document.getElementById("message");
+        const nextBtn = document.getElementById("nextBtn");
+        const slider = document.getElementById("slider");
+        const emojiDisplay = document.getElementById("emojiDisplay");
+        const sliderContainer = document.getElementById("sliderContainer");
+        const punchImage = document.getElementById("punchImage");
+        const minutesCounter = document.getElementById("minutesCounter");
+        const timelineSection = document.getElementById("timelineSection");
+        const lotterySection = document.getElementById("lotterySection");
+        const shoeImageSection = document.getElementById("shoeImageSection");
+        const finalButtons = document.getElementById("finalButtons");
+        const heartEffect = document.getElementById("heartEffect");
+    
+        function clearAll() {
+          msg.classList.remove("hidden");
+          sliderContainer.classList.add("hidden");
+          punchImage.classList.add("hidden");
+          minutesCounter.classList.add("hidden");
+          timelineSection.classList.add("hidden");
+          lotterySection.classList.add("hidden");
+          shoeImageSection.classList.add("hidden");
+          finalButtons.classList.add("hidden");
+          nextBtn.classList.remove("hidden");
+          heartEffect.innerHTML = "";
+          clearTimeout(typingTimeout);
+        }
+    
+        function nextMessage() {
+          clearAll();
+          index++;
+          const current = messages[index];
+    
+          // Page 1
+          if (index === 0) {
+            typeText(current, msg);
+            return;
+          }
+    
+          // Page 2: Slider
+          if (index === 1) {
+            msg.innerHTML = current;
+            sliderContainer.classList.remove("hidden");
+            slider.oninput = () => emojiDisplay.textContent = emojis[slider.value - 1];
+            return;
+          }
+    
+          // Page 3: Punch
+          if (index === 2) {
+            msg.innerHTML = current;
+            punchStep = 0;
+            punchImage.src = punchImages[0];
+            punchImage.classList.remove("hidden");
+            nextBtn.classList.add("hidden");
+            punchImage.onclick = () => {
+              punchStep++;
+              if (punchStep < punchImages.length) punchImage.src = punchImages[punchStep];
+              else {
+                punchImage.onclick = null;
+                nextBtn.classList.remove("hidden");
+              }
+            };
+            return;
+          }
+    
+          // Page 4: Minute Counter
+          if (current === "minutes") {
+            msg.innerHTML = "Remember how we started, Sam?";
+            minutesCounter.classList.remove("hidden");
+            startMinuteCounter();
+            return;
+          }
+    
+          // Page 5: Timeline
+          if (current === "timeline") {
+            msg.classList.add("hidden");
+            timelineSection.classList.remove("hidden");
+            return;
+          }
+    
+          // Page 6: Apology + Hearts
+          if (index === 6) {
+            typeText(current, msg);
+            startHearts();
+            return;
+          }
+    
+          // Page 7: Final message
+          if (index === 7) {
+            msg.innerHTML = current;
+            return;
+          }
+    
+          // Page 8: Lottery
+          if (current === "lottery") {
+            msg.classList.add("hidden");
+            lotterySection.classList.remove("hidden");
+            return;
+          }
+    
+          // Page 9: Shoe confirm
+          if (current === "shoeConfirm") {
+            msg.classList.add("hidden");
+            shoeImageSection.classList.remove("hidden");
+            return;
+          }
+    
+          // Page 10: Final line
+          if (index === 10) {
+            msg.innerHTML = current;
+            return;
+          }
+    
+          // Page 11: Buttons
+          if (current === "finalButtons") {
+            msg.classList.add("hidden");
+            finalButtons.classList.remove("hidden");
+            nextBtn.classList.add("hidden");
+          }
+        }
+    
+        function typeText(text, target) {
+          target.innerHTML = "";
+          let i = 0;
+          function type() {
+            if (i < text.length) {
+              target.innerHTML += text.charAt(i);
+              i++;
+              typingTimeout = setTimeout(type, 35);
+            }
+          }
+          type();
+        }
+    
+        function startMinuteCounter() {
+          const startTime = new Date("2023-03-18T15:00:00Z");
+          const now = new Date();
+          const diff = Math.floor((now - startTime) / 60000);
+          minutesCounter.innerHTML = `It’s been <b></b> minutes since 8:30 PM IST on 18 March 2023 — and I’ve thought of you through all of them.`;
+        }
+    
+        function startHearts() {
+          for (let i = 0; i < 25; i++) {
+            let h = document.createElement("div");
+            h.className = "heart";
+            h.style.left = Math.random() * 100 + "vw";
+            h.style.animationDuration = 4 + Math.random() * 3 + "s";
+            heartEffect.appendChild(h);
+          }
+        }
+    
+        function startLottery() {
+          const boxes = Array.from(document.querySelectorAll('.box'));
+          let count = 0;
+          const total = 20;
+          const interval = setInterval(() => {
+            boxes.forEach(b => b.classList.remove('highlight'));
+            const pick = Math.floor(Math.random() * boxes.length);
+            boxes[pick].classList.add('highlight');
+            count++;
+            if (count === total) {
+              clearInterval(interval);
+              boxes.forEach(b => b.classList.remove('highlight'));
+              boxes[2].classList.add('highlight'); // fixed on 3rd box
+              nextBtn.classList.remove("hidden");
+            }
+          }, 100);
+        }
+    
+        // Start the first message on page load
+        window.onload = nextMessage;
+      </script>
+    </body>
+    </html>
